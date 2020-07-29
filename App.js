@@ -1,5 +1,5 @@
 import React from 'react';
-import Main from "./src/components/MainComponent";
+import Main from "./src/components/MainScreen";
 import {View, StatusBar, SafeAreaView} from "react-native";
 import {NavigationContainer} from "@react-navigation/native";
 
