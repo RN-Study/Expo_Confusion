@@ -5,6 +5,7 @@ import {connect} from 'react-redux';
 import {HISTORY} from '../shared/history';
 import {LEADERS} from "../shared/leaders";
 import {baseURL} from "../shared/baseURL";
+import Loading from "./Loading";
 
 const mapStateToProps = (state) => {
   return {
@@ -51,41 +52,41 @@ const AboutScreen = (props) => {
   const RenderAboutScreen = () => {
     return (
       <FlatList
-        ListHeaderComponent={() => <RenderHistory />}
+        ListHeaderComponent={() => <RenderHistory/>}
         ListFooterComponent={() => <RenderLeaders {...props} />}
       />
     );
   };
 
-  // if (props.leaders.isLoading) {
-  //   return (
-  //     <SafeAreaView>
-  //       <RenderHistory />
-  //       <Card title={'Corporate Leadership'}>
-  //         <Loading />
-  //       </Card>
-  //     </SafeAreaView>
-  //   );
-  // } else if (props.leaders.errorMessage) {
-  //   return (
-  //     <SafeAreaView>
-  //       <Animatable.View animation={'fadeInDown'} duration={2000} delay={1000}>
-  //         <RenderHistory />
-  //         <Card title={'Corporate Leadership'}>
-  //           <Text> {props.leaders.errorMessage} </Text>
-  //         </Card>
-  //       </Animatable.View>
-  //     </SafeAreaView>
-  //   );
-  // } else {
+  if (props.leaders.isLoading) {
+    return (
+      <SafeAreaView>
+        <RenderHistory/>
+        <Card title={'Corporate Leadership'}>
+          <Loading/>
+        </Card>
+      </SafeAreaView>
+    );
+  } else if (props.leaders.errorMessage) {
     return (
       <SafeAreaView>
         {/*<Animatable.View animation={'fadeInDown'} duration={2000} delay={1000}>*/}
-          <RenderAboutScreen />
+        <RenderHistory/>
+        <Card title={'Corporate Leadership'}>
+          <Text> {props.leaders.errorMessage} </Text>
+        </Card>
         {/*</Animatable.View>*/}
       </SafeAreaView>
     );
-  // }
+  } else {
+    return (
+      <SafeAreaView>
+        {/*<Animatable.View animation={'fadeInDown'} duration={2000} delay={1000}>*/}
+        <RenderAboutScreen/>
+        {/*</Animatable.View>*/}
+      </SafeAreaView>
+    );
+  }
 };
 const styles = StyleSheet.create({});
 export default connect(mapStateToProps)(AboutScreen);
