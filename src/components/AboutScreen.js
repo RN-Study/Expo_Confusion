@@ -1,8 +1,16 @@
 import React, {useState} from 'react';
 import {View, StyleSheet, Text, FlatList, SafeAreaView} from 'react-native';
 import {Card, ListItem} from 'react-native-elements';
+import {connect} from 'react-redux';
 import {HISTORY} from '../shared/history';
 import {LEADERS} from "../shared/leaders";
+import {baseURL} from "../shared/baseURL";
+
+const mapStateToProps = (state) => {
+  return {
+    leaders: state.leaders,
+  };
+};
 
 const AboutScreen = (props) => {
   const [history] = useState(HISTORY);
@@ -18,8 +26,7 @@ const AboutScreen = (props) => {
             <Text style={{color: 'gray'}}>{item.description}</Text>
           </View>
         }
-        // leftAvatar={{source: {uri: baseURL + item.image}}}
-        leftAvatar={{source: require('../assets/images/alberto.png')}}
+        leftAvatar={{source: {uri: baseURL + item.image}}}
       />
     );
   };
@@ -34,7 +41,7 @@ const AboutScreen = (props) => {
     return (
       <Card containerStyle={{flex: 1}} title={'Corporate Leadership'}>
         <FlatList
-          data={leaders}
+          data={props.leaders.leaders}
           renderItem={renderLeaderItem}
           keyExtractor={(item) => item.id.toString()}
         />
@@ -81,5 +88,4 @@ const AboutScreen = (props) => {
   // }
 };
 const styles = StyleSheet.create({});
-// export default connect(mapStateToProps)(AboutScreen);
-export default AboutScreen;
+export default connect(mapStateToProps)(AboutScreen);

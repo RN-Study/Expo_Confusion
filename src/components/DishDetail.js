@@ -1,8 +1,18 @@
 import React, {useState} from 'react';
 import {FlatList, Text, View} from 'react-native';
 import {Card, Icon} from 'react-native-elements';
+import { connect } from 'react-redux';
+import { baseURL } from '../shared/baseURL';
 import {DISHES} from "../shared/dishes";
 import {COMMENTS} from "../shared/comments";
+
+const mapStateToProps = (state) => {
+  return {
+    dishes: state.dishes,
+    comments: state.comments,
+    // favorites: state.favorites,
+  };
+};
 
 const RenderDish = (props) => {
   const dish = props.dish;
@@ -11,7 +21,7 @@ const RenderDish = (props) => {
     return(
       <Card
         featuredTitle={dish.name}
-        image={require('../assets/images/uthappizza.png')}>
+        image={{uri: baseURL + dish.image}}>
         <Text style={{margin: 10}}>
           {dish.description}
         </Text>
@@ -59,8 +69,6 @@ const RenderComments = (props) => {
   );
 };
 const DishDetail = (props) => {
-  const [dishes] = useState(DISHES);
-  const [comments] = useState(COMMENTS);
   const [favorites, setFavorites] = useState([]);
   const {dishId} = props.route.params;
 
@@ -72,14 +80,14 @@ const DishDetail = (props) => {
     <FlatList
       ListHeaderComponent={() => (
         <RenderDish
-          dish={dishes[+dishId]}
+          dish={props.dishes.dishes[+dishId]}
           favorite={favorites.some((el) => el === dishId)}
           onPressFavorite={() => markFavorite(dishId)}
         />
       )}
       ListFooterComponent={() => (
         <RenderComments
-          comments={comments.filter(
+          comments={props.comments.comments.filter(
             (comment) => comment.dishId === dishId,
           )}
         />
@@ -88,4 +96,4 @@ const DishDetail = (props) => {
   );
 };
 
-export default DishDetail;
+export default connect(mapStateToProps)(DishDetail);

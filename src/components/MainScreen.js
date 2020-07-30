@@ -1,14 +1,36 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {SafeAreaView, StatusBar, View, StyleSheet, Image, Text} from "react-native";
 import {createStackNavigator} from "@react-navigation/stack";
 import {createDrawerNavigator, DrawerContentScrollView, DrawerItemList} from "@react-navigation/drawer";
 import DishDetail from "./DishDetail";
 import Menu from './MenuScreen';
-import { DISHES } from '../shared/dishes';
 import {Icon} from 'react-native-elements';
 import Home from "./HomeScreen";
 import AboutScreen from "./AboutScreen";
 import ContactScreen from "./ContactScreen";
+import {connect} from 'react-redux';
+import {
+  fetchDishes,
+  fetchComments,
+  fetchLeaders,
+  fetchPromos
+} from "../redux/ActionCreators";
+
+const mapStateToProps = (state) => {
+  return {
+    dishes: state.dishes,
+    comments: state.comments,
+    promotions: state.promotions,
+    leaders: state.leaders,
+  };
+};
+const mapDispatchToProps = (dispatch) => ({
+  fetchDishes: () => dispatch(fetchDishes()),
+  fetchComments: () => dispatch(fetchComments()),
+  fetchPromos: () => dispatch(fetchPromos()),
+  fetchLeaders: () => dispatch(fetchLeaders()),
+  // postComment: () => dispatch(postComment()),
+});
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -195,16 +217,17 @@ export const MainNavigator = (props) => {
             size = 24;
           } else if (route.name === 'Contact') {
             iconName = `address-card${focused ? '' : ''}`;
-            size = 22;}
-      //     } else if (route.name === 'Reservation') {
-      //       iconName = `cutlery${focused ? '' : ''}`;
-      //       size = 24;
-      //     } else if (route.name === 'Favorites') {
-      //       iconName = `heart${focused ? '' : ''}`;
-      //       size = 24;
-      //     }
+            size = 22;
+          }
+          //     } else if (route.name === 'Reservation') {
+          //       iconName = `cutlery${focused ? '' : ''}`;
+          //       size = 24;
+          //     } else if (route.name === 'Favorites') {
+          //       iconName = `heart${focused ? '' : ''}`;
+          //       size = 24;
+          //     }
           return (
-            <Icon name={iconName} type={iconType} size={size} color={color} />
+            <Icon name={iconName} type={iconType} size={size} color={color}/>
           );
         }
       })}
@@ -246,21 +269,21 @@ export const MainNavigator = (props) => {
 };
 
 const Main = (props) => {
-const [dishes] = useState(DISHES);
-  const [selectedDish, setSelectedDish] = useState(null);
-  const onDishSelect = (dishId) => {
-    setSelectedDish(dishId);
-  }
-    return (
-      <View style={{flex: 1}}>
-        <StatusBar barStyle="dark-content"/>
-        <SafeAreaView style={{flex: 1}}>
-          {/*<Menu dishes={dishes} onPress={(dishId) => onDishSelect(dishId)}/>*/}
-          {/*<DishDetail dish={dishes.filter((dish) => dish.id === selectedDish)[0]}/>*/}
-          <MainNavigator/>
-        </SafeAreaView>
-      </View>
-    );
+  useEffect(() => {
+    props.fetchDishes();
+    props.fetchLeaders();
+    props.fetchPromos();
+    props.fetchComments();
+  }, []);
+
+  return (
+    <View style={{flex: 1}}>
+      <StatusBar barStyle="dark-content"/>
+      <SafeAreaView style={{flex: 1}}>
+        <MainNavigator/>
+      </SafeAreaView>
+    </View>
+  );
 }
 const styles = StyleSheet.create({
   container: {
@@ -285,4 +308,4 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 });
-export default Main;
+export default connect(mapStateToProps, mapDispatchToProps)(Main);

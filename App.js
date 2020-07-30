@@ -1,14 +1,19 @@
 import React from 'react';
 import Main from "./src/components/MainScreen";
-import {View, StatusBar, SafeAreaView} from "react-native";
 import {NavigationContainer} from "@react-navigation/native";
+import {ConfigureStore} from "./src/redux/configureStore";
+import {Provider} from "react-redux";
 
-export default class App extends React.Component {
-  render() {
-    return (
-      <NavigationContainer>
+const store = ConfigureStore();
+
+const App = () => {
+
+  return (
+    <NavigationContainer>
+      <Provider store={store}>
         <Main/>
-      </NavigationContainer>
-    );
-  }
-}
+      </Provider>
+    </NavigationContainer>
+  );
+};
+export default App;
