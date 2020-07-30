@@ -15,6 +15,7 @@ import {
   fetchLeaders,
   fetchPromos
 } from "../redux/ActionCreators";
+import Reservation from "./ReservationScreen";
 
 const mapStateToProps = (state) => {
   return {
@@ -164,6 +165,36 @@ export const ContactNavigator = ({navigation}) => {
     </Stack.Navigator>
   );
 };
+export const ReservationNavigator = ({navigation}) => {
+  return (
+    <Stack.Navigator
+      initialRouteName="Reservation"
+      // headerMode={'none'}
+      screenOptions={{
+        headerStyle: {backgroundColor: '#512DA8'},
+        headerTintColor: '#FFF',
+        headerTitleStyle: {color: '#FFF'},
+        headerLeft: () => (
+          <Icon
+            name={'menu'}
+            size={24}
+            color={'white'}
+            onPress={() => {
+              navigation.toggleDrawer();
+            }}
+          />
+        ),
+      }}>
+      <Stack.Screen
+        name={'Reservation'}
+        component={Reservation}
+        options={{
+          title: 'Reservation',
+        }}
+      />
+    </Stack.Navigator>
+  );
+};
 export const CustomDrawerContent = (props) => {
   return (
     <DrawerContentScrollView {...props}>
@@ -218,14 +249,13 @@ export const MainNavigator = (props) => {
           } else if (route.name === 'Contact') {
             iconName = `address-card${focused ? '' : ''}`;
             size = 22;
-          }
-          //     } else if (route.name === 'Reservation') {
-          //       iconName = `cutlery${focused ? '' : ''}`;
-          //       size = 24;
+              } else if (route.name === 'Reservation') {
+                iconName = `cutlery${focused ? '' : ''}`;
+                size = 24;
           //     } else if (route.name === 'Favorites') {
           //       iconName = `heart${focused ? '' : ''}`;
           //       size = 24;
-          //     }
+              }
           return (
             <Icon name={iconName} type={iconType} size={size} color={color}/>
           );
@@ -262,6 +292,14 @@ export const MainNavigator = (props) => {
         options={{
           title: 'Contact',
           drawerLabel: 'Contact Us',
+        }}
+      />
+      <Drawer.Screen
+        name={'Reservation'}
+        component={ReservationNavigator}
+        options={{
+          title: 'Reserve Table',
+          drawerLabel: 'Reserve Table',
         }}
       />
     </Drawer.Navigator>
