@@ -7,6 +7,8 @@ import Menu from './MenuScreen';
 import { DISHES } from '../shared/dishes';
 import {Icon} from 'react-native-elements';
 import Home from "./HomeScreen";
+import AboutScreen from "./AboutScreen";
+import ContactScreen from "./ContactScreen";
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -79,7 +81,67 @@ export const HomeNavigator = ({navigation}) => {
     </Stack.Navigator>
   );
 };
-
+export const AboutNavigator = ({navigation}) => {
+  return (
+    <Stack.Navigator
+      initialRouteName="About"
+      // headerMode={'none'}
+      screenOptions={{
+        headerStyle: {backgroundColor: '#512DA8'},
+        headerTintColor: '#FFF',
+        headerTitleStyle: {color: '#FFF'},
+        // headerLeft: () => (
+        //   <Icon
+        //     name={'menu'}
+        //     size={24}
+        //     color={'white'}
+        //     onPress={() => {
+        //       navigation.toggleDrawer();
+        //     }}
+        //   />
+        // ),
+      }}>
+      <Stack.Screen
+        name={'About'}
+        component={AboutScreen}
+        options={{
+          title: 'About Us',
+          headerTitleAlign: 'left',
+        }}
+      />
+    </Stack.Navigator>
+  );
+};
+export const ContactNavigator = ({navigation}) => {
+  return (
+    <Stack.Navigator
+      initialRouteName="Contact"
+      // headerMode={'none'}
+      screenOptions={{
+        headerStyle: {backgroundColor: '#512DA8'},
+        headerTintColor: '#FFF',
+        headerTitleStyle: {color: '#FFF'},
+        // headerLeft: () => (
+        //   <Icon
+        //     name={'menu'}
+        //     size={24}
+        //     color={'white'}
+        //     onPress={() => {
+        //       navigation.toggleDrawer();
+        //     }}
+        //   />
+        // ),
+      }}>
+      <Stack.Screen
+        name={'Contact'}
+        component={ContactScreen}
+        options={{
+          title: 'Contact Us',
+        }}
+      />
+    </Stack.Navigator>
+  );
+};
 export const MainNavigator = (props) => {
   return (
     <Drawer.Navigator
@@ -132,11 +194,27 @@ export const MainNavigator = (props) => {
         }}
       />
       <Drawer.Screen
+        name={'About'}
+        component={AboutNavigator}
+        options={{
+          title: 'About',
+          drawerLabel: 'About Us',
+        }}
+      />
+      <Drawer.Screen
         name={'Menu'}
         component={MenuNavigator}
         options={{
           title: 'Menu',
           drawerLabel: 'Menu',
+        }}
+      />
+      <Drawer.Screen
+        name={'Contact'}
+        component={ContactNavigator}
+        options={{
+          title: 'Contact',
+          drawerLabel: 'Contact Us',
         }}
       />
     </Drawer.Navigator>
