@@ -3,16 +3,20 @@ import {FlatList, Text, View} from 'react-native';
 import {Card, Icon} from 'react-native-elements';
 import { connect } from 'react-redux';
 import { baseURL } from '../shared/baseURL';
-import {DISHES} from "../shared/dishes";
-import {COMMENTS} from "../shared/comments";
+import {postFavorite} from "../redux/ActionCreators";
 
 const mapStateToProps = (state) => {
   return {
     dishes: state.dishes,
     comments: state.comments,
-    // favorites: state.favorites,
+    favorites: state.favorites,
   };
 };
+
+const mapDispatchToProps = (dispatch) => ({
+  postFavorite: (dishId) => dispatch(postFavorite(dishId)),
+  // addComment: (comment) => dispatch(postComment(comment)),
+});
 
 const RenderDish = (props) => {
   const dish = props.dish;
@@ -73,7 +77,7 @@ const DishDetail = (props) => {
   const {dishId} = props.route.params;
 
   const markFavorite = (dishId) => {
-    setFavorites(favorites.concat(dishId));
+    props.postFavorite(dishId);
   }
 
   return (
@@ -81,7 +85,7 @@ const DishDetail = (props) => {
       ListHeaderComponent={() => (
         <RenderDish
           dish={props.dishes.dishes[+dishId]}
-          favorite={favorites.some((el) => el === dishId)}
+          favorite={props.favorites.some((el) => el === dishId)}
           onPressFavorite={() => markFavorite(dishId)}
         />
       )}
@@ -96,4 +100,4 @@ const DishDetail = (props) => {
   );
 };
 
-export default connect(mapStateToProps)(DishDetail);
+export default connect(mapStateToProps, mapDispatchToProps)(DishDetail);
