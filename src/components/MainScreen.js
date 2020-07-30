@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
-import {SafeAreaView, StatusBar, View} from "react-native";
+import {SafeAreaView, StatusBar, View, StyleSheet, Image, Text} from "react-native";
 import {createStackNavigator} from "@react-navigation/stack";
-import {createDrawerNavigator} from "@react-navigation/drawer";
+import {createDrawerNavigator, DrawerContentScrollView, DrawerItemList} from "@react-navigation/drawer";
 import DishDetail from "./DishDetail";
 import Menu from './MenuScreen';
 import { DISHES } from '../shared/dishes';
@@ -28,16 +28,16 @@ export const MenuNavigator = ({navigation}) => {
         component={Menu}
         options={{
           title: 'Menu',
-          // headerLeft: () => (
-          //   <Icon
-          //     name={'menu'}
-          //     size={24}
-          //     color={'white'}
-          //     onPress={() => {
-          //       navigation.toggleDrawer();
-          //     }}
-          //   />
-          // ),
+          headerLeft: () => (
+            <Icon
+              name={'menu'}
+              size={24}
+              color={'white'}
+              onPress={() => {
+                navigation.toggleDrawer();
+              }}
+            />
+          ),
         }}
       />
       <Stack.Screen
@@ -60,16 +60,16 @@ export const HomeNavigator = ({navigation}) => {
         headerStyle: {backgroundColor: '#512DA8'},
         headerTintColor: '#FFF',
         headerTitleStyle: {color: '#FFF'},
-        // headerLeft: () => (
-        //   <Icon
-        //     name={'menu'}
-        //     size={24}
-        //     color={'white'}
-        //     onPress={() => {
-        //       navigation.toggleDrawer();
-        //     }}
-        //   />
-        // ),
+        headerLeft: () => (
+          <Icon
+            name={'menu'}
+            size={24}
+            color={'white'}
+            onPress={() => {
+              navigation.toggleDrawer();
+            }}
+          />
+        ),
       }}>
       <Stack.Screen
         name={'Home'}
@@ -90,16 +90,16 @@ export const AboutNavigator = ({navigation}) => {
         headerStyle: {backgroundColor: '#512DA8'},
         headerTintColor: '#FFF',
         headerTitleStyle: {color: '#FFF'},
-        // headerLeft: () => (
-        //   <Icon
-        //     name={'menu'}
-        //     size={24}
-        //     color={'white'}
-        //     onPress={() => {
-        //       navigation.toggleDrawer();
-        //     }}
-        //   />
-        // ),
+        headerLeft: () => (
+          <Icon
+            name={'menu'}
+            size={24}
+            color={'white'}
+            onPress={() => {
+              navigation.toggleDrawer();
+            }}
+          />
+        ),
       }}>
       <Stack.Screen
         name={'About'}
@@ -121,16 +121,16 @@ export const ContactNavigator = ({navigation}) => {
         headerStyle: {backgroundColor: '#512DA8'},
         headerTintColor: '#FFF',
         headerTitleStyle: {color: '#FFF'},
-        // headerLeft: () => (
-        //   <Icon
-        //     name={'menu'}
-        //     size={24}
-        //     color={'white'}
-        //     onPress={() => {
-        //       navigation.toggleDrawer();
-        //     }}
-        //   />
-        // ),
+        headerLeft: () => (
+          <Icon
+            name={'menu'}
+            size={24}
+            color={'white'}
+            onPress={() => {
+              navigation.toggleDrawer();
+            }}
+          />
+        ),
       }}>
       <Stack.Screen
         name={'Contact'}
@@ -140,6 +140,30 @@ export const ContactNavigator = ({navigation}) => {
         }}
       />
     </Stack.Navigator>
+  );
+};
+export const CustomDrawerContent = (props) => {
+  return (
+    <DrawerContentScrollView {...props}>
+      <SafeAreaView
+        style={styles.container}
+        forceInset={{top: 'always', horizontal: 'never'}}>
+        <View style={styles.drawerHeader}>
+          <View style={{flex: 1}}>
+            <Image
+              source={require('../assets/images/logo.png')}
+              style={styles.drawerImage}
+            />
+          </View>
+          <View style={{flex: 2, alignContent: 'center'}}>
+            <Text style={styles.drawerHeaderText}> Ristorante Confusion </Text>
+          </View>
+        </View>
+        <View style={{flex: 5}}>
+          <DrawerItemList {...props} />
+        </View>
+      </SafeAreaView>
+    </DrawerContentScrollView>
   );
 };
 export const MainNavigator = (props) => {
@@ -154,24 +178,24 @@ export const MainNavigator = (props) => {
           // activeTintColor: '#e91e63',
         }
       }
-      // drawerContent={(props) => <CustomDrawerContent {...props} />}
-      // screenOptions={({route}) => ({
-      //   drawerIcon: ({color, focused}) => {
-      //     let iconName;
-      //     let iconType = 'font-awesome';
-      //     let size;
-      //     if (route.name === 'Home') {
-      //       iconName = `home${focused ? '' : ''}`;
-      //       size = 24;
-      //     } else if (route.name === 'About') {
-      //       iconName = `info-circle${focused ? '' : ''}`;
-      //       size = 24;
-      //     } else if (route.name === 'Menu') {
-      //       iconName = `list${focused ? '' : ''}`;
-      //       size = 24;
-      //     } else if (route.name === 'Contact') {
-      //       iconName = `address-card${focused ? '' : ''}`;
-      //       size = 22;
+      drawerContent={(props) => <CustomDrawerContent {...props} />}
+      screenOptions={({route}) => ({
+        drawerIcon: ({color, focused}) => {
+          let iconName;
+          let iconType = 'font-awesome';
+          let size;
+          if (route.name === 'Home') {
+            iconName = `home${focused ? '' : ''}`;
+            size = 24;
+          } else if (route.name === 'About') {
+            iconName = `info-circle${focused ? '' : ''}`;
+            size = 24;
+          } else if (route.name === 'Menu') {
+            iconName = `list${focused ? '' : ''}`;
+            size = 24;
+          } else if (route.name === 'Contact') {
+            iconName = `address-card${focused ? '' : ''}`;
+            size = 22;}
       //     } else if (route.name === 'Reservation') {
       //       iconName = `cutlery${focused ? '' : ''}`;
       //       size = 24;
@@ -179,11 +203,11 @@ export const MainNavigator = (props) => {
       //       iconName = `heart${focused ? '' : ''}`;
       //       size = 24;
       //     }
-      //     return (
-      //       <Icon name={iconName} type={iconType} size={size} color={color} />
-      //     );
-      //   },
-      // })}
+          return (
+            <Icon name={iconName} type={iconType} size={size} color={color} />
+          );
+        }
+      })}
     >
       <Drawer.Screen
         name={'Home'}
@@ -238,5 +262,27 @@ const [dishes] = useState(DISHES);
       </View>
     );
 }
-
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  drawerHeader: {
+    backgroundColor: '#512DA8',
+    height: 140,
+    alignItems: 'center',
+    justifyContent: 'center',
+    flex: 1,
+    flexDirection: 'row',
+  },
+  drawerImage: {
+    margin: 10,
+    width: 80,
+    height: 60,
+  },
+  drawerHeaderText: {
+    color: 'white',
+    fontSize: 24,
+    fontWeight: 'bold',
+  },
+});
 export default Main;
