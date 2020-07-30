@@ -28,9 +28,17 @@ const Reservation = () => {
 
   const handleReservation = () => {
     console.log(JSON.stringify({guests, smoking, date}));
-    // toogleModal();
+    toogleModal();
   };
-
+  const toogleModal = () => {
+    setShowModal(!showModal);
+  };
+  const resetForm = () => {
+    setGuests(1);
+    setSmoking(false);
+    setDate(date);
+    setShow(false);
+  };
   return (
     <ScrollView>
       <View style={styles.formRow}>
@@ -159,6 +167,47 @@ const Reservation = () => {
             accessibilityLabel={'Learn more about this purple button'}
           />
         </View>
+        <Modal
+          animationType={'slide'}
+          transparent={false}
+          visible={showModal}
+          onDismiss={() => {
+            // toogleModal();
+            resetForm();
+          }}
+          onRequestClose={() => {
+            toogleModal();
+            resetForm();
+          }}>
+          <View style={styles.modal}>
+            <Text style={styles.modalTitle}> Your Reservation</Text>
+            <Text style={styles.modalText}>
+              {' '}
+              Number of Guests: {guests}{' '}
+            </Text>
+            <Text style={styles.modalText}>
+              Smoking? : {smoking ? 'Yes' : 'No'}
+            </Text>
+            <Text style={styles.modalText}>
+              Date and Time: {moment(date).format('')}
+            </Text>
+
+            <View
+              style={{
+                backgroundColor: Platform.OS === 'ios' ? '#512DA8' : '',
+                borderRadius: 5,
+              }}>
+              <Button
+                title={'Close'}
+                color={Platform.OS === 'ios' ? 'white' : '#512DA8'}
+                onPress={() => {
+                  toogleModal();
+                  resetForm();
+                }}
+              />
+            </View>
+          </View>
+        </Modal>
       </View>
     </ScrollView>
   );
