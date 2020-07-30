@@ -184,4 +184,5 @@ export const postComment = (newComment) => (dispatch) => {
   setTimeout(() => {
     dispatch(addComment(newComment));
   }, 500);
+
 };

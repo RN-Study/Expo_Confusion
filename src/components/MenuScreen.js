@@ -20,7 +20,7 @@ const Menu = (props) => {
       <Tile
         key={index}
         title={item.name}
-        subtitle={item.description}
+        caption={item.description}
         featured={true}
         imageSrc={{uri: baseURL + item.image}}
         onPress={() => {
