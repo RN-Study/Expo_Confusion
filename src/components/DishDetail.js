@@ -5,6 +5,7 @@ import {connect} from 'react-redux';
 import {baseURL} from '../shared/baseURL';
 import {postComment, postFavorite} from "../redux/ActionCreators";
 import CommentForm from "./CommentForm";
+import * as Animatable from 'react-native-animatable';
 
 const mapStateToProps = (state) => {
   return {
@@ -41,39 +42,41 @@ const DishDetail = (props) => {
 
     if (dish) {
       return (
-        <Card
-          featuredTitle={dish.name}
-          image={{uri: baseURL + dish.image}}>
-          <Text style={{margin: 10}}> {dish.description} </Text>
-          <View style={{flexDirection: 'row', justifyContent: 'center'}}>
-            <Icon
-              raised={true}
-              reverse={true}
-              name={props.favorite ? 'heart' : 'heart-o'}
-              type={'font-awesome'}
-              color={'#f50'}
-              onPress={() => {
-                props.favorite
-                  ? console.log('Alread favorite')
-                  : props.onPressFavorite();
-              }}
+        <Animatable.View animation="fadeInDown" duration={2000} delay={1000}>
+          <Card
+            featuredTitle={dish.name}
+            image={{uri: baseURL + dish.image}}>
+            <Text style={{margin: 10}}> {dish.description} </Text>
+            <View style={{flexDirection: 'row', justifyContent: 'center'}}>
+              <Icon
+                raised={true}
+                reverse={true}
+                name={props.favorite ? 'heart' : 'heart-o'}
+                type={'font-awesome'}
+                color={'#f50'}
+                onPress={() => {
+                  props.favorite
+                    ? console.log('Alread favorite')
+                    : props.onPressFavorite();
+                }}
+              />
+              <Icon
+                raised={true}
+                reverse={true}
+                name={'pencil'}
+                type={'font-awesome'}
+                color={'#512DA8'}
+                onPress={toogleModal}
+              />
+            </View>
+            <CommentForm
+              isShow={showModal}
+              toogleModal={toogleModal}
+              handleComment={addCommentStart}
+              dishId={dishId}
             />
-            <Icon
-              raised={true}
-              reverse={true}
-              name={'pencil'}
-              type={'font-awesome'}
-              color={'#512DA8'}
-              onPress={toogleModal}
-            />
-          </View>
-          <CommentForm
-            isShow={showModal}
-            toogleModal={toogleModal}
-            handleComment={addCommentStart}
-            dishId={dishId}
-          />
-        </Card>
+          </Card>
+        </Animatable.View>
       );
     } else {
       return (<View></View>);
@@ -99,13 +102,15 @@ const DishDetail = (props) => {
       );
     };
     return (
-      <Card title={'Comments'}>
-        <FlatList
-          data={comments}
-          renderItem={renderCommentItem}
-          keyExtractor={(item) => item.id.toString()}
-        />
-      </Card>
+      <Animatable.View animation="fadeInUp" duration={2000} delay={1000}>
+        <Card title={'Comments'}>
+          <FlatList
+            data={comments}
+            renderItem={renderCommentItem}
+            keyExtractor={(item) => item.id.toString()}
+          />
+        </Card>
+      </Animatable.View>
     );
   };
   return (

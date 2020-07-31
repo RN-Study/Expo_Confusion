@@ -7,7 +7,7 @@ import Loading from './Loading';
 import {deleteFavorite} from '../redux/ActionCreators';
 import {SwipeListView} from 'react-native-swipe-list-view';
 import Swipeout from "react-native-swipeout";
-// import * as Animatable from 'react-native-animatable';
+import * as Animatable from 'react-native-animatable';
 
 const mapStateToProps = (state) => {
   return {
@@ -65,7 +65,7 @@ const Favorites = (props) => {
   };
 
   if (props.dishes.isLoading) {
-    return <Loading />;
+    return <Loading/>;
   } else if (props.dishes.errorMessage) {
     return (
       <View>
@@ -74,18 +74,18 @@ const Favorites = (props) => {
     );
   } else {
     return (
-      // <Animatable.View
-      //   animation={'fadeInRightBig'}
-      //   duration={2000}
-      //   delay={1000}>
-      <FlatList
-        data={props.dishes.dishes.filter((dish) =>
-          props.favorites.some((el) => el === dish.id),
-        )}
-        renderItem={RenderMenuItem}
-        keyExtractor={(item) => item.id.toString()}
-      />
-      // </Animatable.View>
+      <Animatable.View
+        animation={'fadeInRightBig'}
+        duration={2000}
+        delay={1000}>
+        <FlatList
+          data={props.dishes.dishes.filter((dish) =>
+            props.favorites.some((el) => el === dish.id),
+          )}
+          renderItem={RenderMenuItem}
+          keyExtractor={(item) => item.id.toString()}
+        />
+      </Animatable.View>
     );
   }
 };

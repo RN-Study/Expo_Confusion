@@ -6,6 +6,7 @@ import {HISTORY} from '../shared/history';
 import {LEADERS} from "../shared/leaders";
 import {baseURL} from "../shared/baseURL";
 import Loading from "./Loading";
+import * as Animatable from 'react-native-animatable';
 
 const mapStateToProps = (state) => {
   return {
@@ -70,20 +71,20 @@ const AboutScreen = (props) => {
   } else if (props.leaders.errorMessage) {
     return (
       <SafeAreaView>
-        {/*<Animatable.View animation={'fadeInDown'} duration={2000} delay={1000}>*/}
+        <Animatable.View animation={'fadeInDown'} duration={2000} delay={1000}>
         <RenderHistory/>
         <Card title={'Corporate Leadership'}>
           <Text> {props.leaders.errorMessage} </Text>
         </Card>
-        {/*</Animatable.View>*/}
+        </Animatable.View>
       </SafeAreaView>
     );
   } else {
     return (
       <SafeAreaView>
-        {/*<Animatable.View animation={'fadeInDown'} duration={2000} delay={1000}>*/}
+        <Animatable.View animation={'fadeInDown'} duration={2000} delay={1000}>
         <RenderAboutScreen/>
-        {/*</Animatable.View>*/}
+        </Animatable.View>
       </SafeAreaView>
     );
   }
