@@ -1,11 +1,12 @@
 import React, {useState} from 'react';
-import {View, StyleSheet, FlatList, Text, Alert} from 'react-native';
+import {View, StyleSheet, FlatList, Text, Alert, TouchableOpacity} from 'react-native';
 import {ListItem, Tile} from 'react-native-elements';
 import {connect} from 'react-redux';
 import {baseURL} from '../shared/baseURL';
 import Loading from './Loading';
 import {deleteFavorite} from '../redux/ActionCreators';
-// import Swipeout from 'react-native-swipeout';
+import {SwipeListView} from 'react-native-swipe-list-view';
+import Swipeout from "react-native-swipeout";
 // import * as Animatable from 'react-native-animatable';
 
 const mapStateToProps = (state) => {
@@ -15,56 +16,51 @@ const mapStateToProps = (state) => {
   };
 };
 
-// const mapDispatchToProps = (dispatch) => ({
-//   deleteFavorite: (dishId) => dispatch(deleteFavorite(dishId)),
-// });
+const mapDispatchToProps = (dispatch) => ({
+  deleteFavorite: (dishId) => dispatch(deleteFavorite(dishId)),
+});
 
 const Favorites = (props) => {
   const {navigate} = props.navigation;
 
   const RenderMenuItem = ({item, index}) => {
-    // const RightButton = [
-    //   {
-    //     text: 'Delete',
-    //     type: 'delete',
-    //     onPress: () => {
-    //       Alert.alert(
-    //         'Delete Favorite',
-    //         'Are you sure you wish to delete the favorite dish' +
-    //           item.name +
-    //           '?',
-    //         [
-    //           {
-    //             text: 'Cancel',
-    //             onPress: () => console.log(item.name + 'Not Delete'),
-    //             style: 'cancel',
-    //           },
-    //           {
-    //             text: 'Delete',
-    //             onPress: () => props.deleteFavorite(item.id),
-    //           },
-    //         ],
-    //         {cancelable: false},
-    //       );
-    //     },
-    //   },
-    // ];
+    const RightButton = [
+      {
+        text: 'Delete',
+        type: 'delete',
+        onPress: () => {
+          Alert.alert(
+            'Delete Favorite',
+            'Are you sure you wish to delete the favorite dish' +
+            item.name +
+            '?',
+            [
+              {
+                text: 'Cancel',
+                onPress: () => console.log(item.name + 'Not Delete'),
+                style: 'cancel',
+              },
+              {
+                text: 'Delete',
+                onPress: () => props.deleteFavorite(item.id),
+              },
+            ],
+            {cancelable: false},
+          );
+        },
+      },
+    ];
     return (
-      // <Swipeout right={RightButton} autoClose={true}>
-      //   <Animatable.View
-      //     animation={'fadeInRightBig'}
-      //     duration={2000}
-      //     delay={1000}>
-          <ListItem
-            key={index}
-            title={item.name}
-            subtitle={item.description}
-            chevron={false}
-            onPress={() => navigate('DishDetail', {dishId: item.id})}
-            leftAvatar={{source: {uri: baseURL + item.image}}}
-          />
-      //   </Animatable.View>
-      // </Swipeout>
+      <Swipeout right={RightButton} autoClose={true}>
+        <ListItem
+          key={index}
+          title={item.name}
+          subtitle={item.description}
+          chevron={false}
+          onPress={() => navigate('DishDetail', {dishId: item.id})}
+          leftAvatar={{source: {uri: baseURL + item.image}}}
+        />
+      </Swipeout>
     );
   };
 
@@ -93,6 +89,5 @@ const Favorites = (props) => {
     );
   }
 };
-const styles = StyleSheet.create({});
 
-export default connect(mapStateToProps)(Favorites);
+export default connect(mapStateToProps, mapDispatchToProps)(Favorites);
