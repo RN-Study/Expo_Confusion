@@ -16,6 +16,7 @@ import {
   fetchPromos
 } from "../redux/ActionCreators";
 import Reservation from "./ReservationScreen";
+import Favorites from "./Favorites";
 
 const mapStateToProps = (state) => {
   return {
@@ -195,6 +196,36 @@ export const ReservationNavigator = ({navigation}) => {
     </Stack.Navigator>
   );
 };
+export const FavoriteNavigator = ({navigation}) => {
+  return (
+    <Stack.Navigator
+      initialRouteName="Favorites"
+      // headerMode={'none'}
+      screenOptions={{
+        headerStyle: {backgroundColor: '#512DA8'},
+        headerTintColor: '#FFF',
+        headerTitleStyle: {color: '#FFF'},
+        headerLeft: () => (
+          <Icon
+            name={'menu'}
+            size={24}
+            color={'white'}
+            onPress={() => {
+              navigation.toggleDrawer();
+            }}
+          />
+        ),
+      }}>
+      <Stack.Screen
+        name={'Favorites'}
+        component={Favorites}
+        options={{
+          title: 'My Favorites',
+        }}
+      />
+    </Stack.Navigator>
+  );
+};
 export const CustomDrawerContent = (props) => {
   return (
     <DrawerContentScrollView {...props}>
@@ -252,9 +283,9 @@ export const MainNavigator = (props) => {
               } else if (route.name === 'Reservation') {
                 iconName = `cutlery${focused ? '' : ''}`;
                 size = 24;
-          //     } else if (route.name === 'Favorites') {
-          //       iconName = `heart${focused ? '' : ''}`;
-          //       size = 24;
+              } else if (route.name === 'Favorites') {
+                iconName = `heart${focused ? '' : ''}`;
+                size = 24;
               }
           return (
             <Icon name={iconName} type={iconType} size={size} color={color}/>
@@ -284,6 +315,14 @@ export const MainNavigator = (props) => {
         options={{
           title: 'Menu',
           drawerLabel: 'Menu',
+        }}
+      />
+      <Drawer.Screen
+        name={'Favorites'}
+        component={FavoriteNavigator}
+        options={{
+          title: 'My Favorites',
+          drawerLabel: 'My Favorites',
         }}
       />
       <Drawer.Screen
