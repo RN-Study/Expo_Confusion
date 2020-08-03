@@ -8,6 +8,7 @@ import {Icon} from 'react-native-elements';
 import Home from "./HomeScreen";
 import AboutScreen from "./AboutScreen";
 import ContactScreen from "./ContactScreen";
+import Login from "./LoginScreen";
 import {connect} from 'react-redux';
 import {
   fetchDishes,
@@ -73,7 +74,36 @@ export const MenuNavigator = ({navigation}) => {
     </Stack.Navigator>
   );
 };
-
+export const LoginNavigator = ({navigation}) => {
+  return (
+    <Stack.Navigator
+      initialRouteName="Login"
+      // headerMode={'none'}
+      screenOptions={{
+        headerStyle: {backgroundColor: '#512DA8'},
+        headerTintColor: '#FFF',
+        headerTitleStyle: {color: '#FFF'},
+        headerLeft: () => (
+          <Icon
+            name={'menu'}
+            size={24}
+            color={'white'}
+            onPress={() => {
+              navigation.toggleDrawer();
+            }}
+          />
+        ),
+      }}>
+      <Stack.Screen
+        name={'Login'}
+        component={Login}
+        options={{
+          title: 'Login',
+        }}
+      />
+    </Stack.Navigator>
+  );
+};
 export const HomeNavigator = ({navigation}) => {
   return (
     <Stack.Navigator
@@ -269,7 +299,10 @@ export const MainNavigator = (props) => {
           let iconName;
           let iconType = 'font-awesome';
           let size;
-          if (route.name === 'Home') {
+          if (route.name === 'Login') {
+            iconName = `sign-in${focused ? '' : ''}`;
+            size = 24;
+          } else if (route.name === 'Home') {
             iconName = `home${focused ? '' : ''}`;
             size = 24;
           } else if (route.name === 'About') {
@@ -294,6 +327,14 @@ export const MainNavigator = (props) => {
         }
       })}
     >
+      <Drawer.Screen
+        name={'Login'}
+        component={LoginNavigator}
+        options={{
+          title: 'Login',
+          drawerLabel: 'Login',
+        }}
+      />
       <Drawer.Screen
         name={'Home'}
         component={HomeNavigator}
