@@ -1,11 +1,10 @@
-import React, {useState} from 'react';
-import {View, StyleSheet, FlatList, Text, Alert, TouchableOpacity} from 'react-native';
-import {ListItem, Tile} from 'react-native-elements';
+import React from 'react';
+import {View, FlatList, Text, Alert} from 'react-native';
+import {ListItem} from 'react-native-elements';
 import {connect} from 'react-redux';
 import {baseURL} from '../shared/baseURL';
 import Loading from './Loading';
 import {deleteFavorite} from '../redux/ActionCreators';
-import {SwipeListView} from 'react-native-swipe-list-view';
 import Swipeout from "react-native-swipeout";
 import * as Animatable from 'react-native-animatable';
 

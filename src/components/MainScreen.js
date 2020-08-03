@@ -31,7 +31,6 @@ const mapDispatchToProps = (dispatch) => ({
   fetchComments: () => dispatch(fetchComments()),
   fetchPromos: () => dispatch(fetchPromos()),
   fetchLeaders: () => dispatch(fetchLeaders()),
-  // postComment: () => dispatch(postComment()),
 });
 
 const Stack = createStackNavigator();
