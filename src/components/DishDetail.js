@@ -24,7 +24,6 @@ const DishDetail = (props) => {
 
   const {dishId} = props.route.params;
   const [showModal, setShowModal] = useState(false);
-  const [favorites, setFavorites] = useState([]);
 
   const markFavorite = (dishId) => {
     props.postFavorite(dishId);
@@ -40,8 +39,16 @@ const DishDetail = (props) => {
   const RenderDish = (props) => {
     const dish = props.dish;
     const handleViewRef = useRef(null);
-    const recognizeDrag = ({moveX, moveY, dx, dy}) => {
+    const recognizeDragRightToLeft = ({moveX, moveY, dx, dy}) => {
       if (dx < -40) {
+        return true;
+      } else {
+        return false;
+      }
+    };
+    // Assignment 3: Task 3
+    const recognizeDragLeftToRight = ({moveX, moveY, dx, dy}) => {
+      if ( 40 < dx < 100) {
         return true;
       } else {
         return false;
@@ -59,7 +66,7 @@ const DishDetail = (props) => {
           );
       },
       onPanResponderEnd: (e, gestureState) => {
-        if (recognizeDrag(gestureState)) {
+        if (recognizeDragRightToLeft(gestureState)) {
           Alert.alert(
             'Add favorite?',
             'Are you sure you wish to add' + dish.name + 'to favorite ?',
@@ -82,6 +89,8 @@ const DishDetail = (props) => {
             {cancelable: false},
           );
           return true;
+        } else if (recognizeDragLeftToRight(gestureState)) { // Assignment 3: Task 3
+          toogleModal();
         }
       },
     });
@@ -112,6 +121,7 @@ const DishDetail = (props) => {
                     : props.onPressFavorite();
                 }}
               />
+              {/* Assignment 2: Task 1 add button comment */}
               <Icon
                 raised={true}
                 reverse={true}
@@ -121,6 +131,7 @@ const DishDetail = (props) => {
                 onPress={toogleModal}
               />
             </View>
+            {/* Assignment 2: Task 1 add comment form using Modal */}
             <CommentForm
               isShow={showModal}
               toogleModal={toogleModal}
@@ -141,6 +152,7 @@ const DishDetail = (props) => {
       return (
         <View key={index} style={{margin: 10}}>
           <Text style={{fontSize: 16}}> {item.comment} </Text>
+          {/* Assignment 2: Task 1 Change Rating text to Icon */}
           <Rating
             imageSize={24}
             readonly={true}

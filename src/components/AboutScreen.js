@@ -13,7 +13,7 @@ const mapStateToProps = (state) => {
     leaders: state.leaders,
   };
 };
-
+// Assignment 1: Task 2 add About Screen in Drawer Navigator
 const AboutScreen = (props) => {
   const [history] = useState(HISTORY);
   const [leaders] = useState(LEADERS);

@@ -169,11 +169,13 @@ export const deleteFavorite = (dishId) => ({
   payload: dishId,
 });
 
+
+// Assignment 2: Task 2
 export const addComment = (comment) => ({
   type: ActionTypes.ADD_COMMENT,
   payload: comment,
 });
-
+// Assignment 2: Task 2
 export const postComment = (newComment) => (dispatch) => {
   const myDate = new Date();
   const currentDate = new Date(

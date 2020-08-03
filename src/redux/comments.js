@@ -10,6 +10,7 @@ export const comments = (
         errorMessage: null,
         comments: action.payload,
       };
+    // Assignment 2: Task 2
     case ActionTypes.ADD_COMMENT:
       action.payload.id = state.comments.length;
       console.log(state.comments.date);

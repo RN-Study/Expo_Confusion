@@ -104,6 +104,7 @@ export const HomeNavigator = ({navigation}) => {
     </Stack.Navigator>
   );
 };
+// Assignment 1: Task 2 add About Screen in Drawer Navigator
 export const AboutNavigator = ({navigation}) => {
   return (
     <Stack.Navigator
@@ -135,6 +136,7 @@ export const AboutNavigator = ({navigation}) => {
     </Stack.Navigator>
   );
 };
+// Assignment 1: Task 1 add Contact Screen in Drawer Navigator
 export const ContactNavigator = ({navigation}) => {
   return (
     <Stack.Navigator
@@ -300,6 +302,7 @@ export const MainNavigator = (props) => {
           drawerLabel: 'Home',
         }}
       />
+      {/* Assignment 1: Task 2 add About Screen in Drawer Navigator */}
       <Drawer.Screen
         name={'About'}
         component={AboutNavigator}
@@ -324,6 +327,7 @@ export const MainNavigator = (props) => {
           drawerLabel: 'My Favorites',
         }}
       />
+      {/* Assignment 1: Task 1 add Contact Screen in Drawer Navigator */}
       <Drawer.Screen
         name={'Contact'}
         component={ContactNavigator}

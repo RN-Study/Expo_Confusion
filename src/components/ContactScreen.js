@@ -3,7 +3,7 @@ import {Text} from 'react-native';
 import {Card} from 'react-native-elements';
 import {ADDRESS} from '../shared/address';
 import * as Animatable from 'react-native-animatable';
-
+// Assignment 1: Task 1 add Contact Screen in Drawer Navigator
 const ContactScreen = () => {
   const [contact, setContact] = useState(ADDRESS);
   return (
