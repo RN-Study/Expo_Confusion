@@ -1,5 +1,5 @@
 import React, {useState, useRef} from 'react';
-import {FlatList, Text, View, Alert, PanResponder} from 'react-native';
+import {FlatList, Text, View, Alert, PanResponder, Share} from 'react-native';
 import {Card, Icon, Rating} from 'react-native-elements';
 import {connect} from 'react-redux';
 import {baseURL} from '../shared/baseURL';
@@ -95,6 +95,16 @@ const DishDetail = (props) => {
       },
     });
 
+    const shareDish = (title, message, url) => {
+      Share.share({
+        title: title,
+        message: title + ': ' + message + ' ' + url,
+        url: url
+      }, {
+        dialogTitle: 'Share ' + title
+      });
+    };
+
     if (dish) {
       return (
         <Animatable.View
@@ -129,6 +139,14 @@ const DishDetail = (props) => {
                 type={'font-awesome'}
                 color={'#512DA8'}
                 onPress={toogleModal}
+              />
+              <Icon
+                raised={true}
+                reverse={true}
+                name={'share'}
+                type={'font-awesome'}
+                color={'#512DA8'}
+                onPress={() => shareDish(dish.name, dish.description, baseURL + dish.image)}
               />
             </View>
             {/* Assignment 2: Task 1 add comment form using Modal */}
