@@ -31,7 +31,7 @@ const Reservation = () => {
 
   const handleReservation = () => {
     console.log(JSON.stringify({guests, smoking, date}));
-    toogleModal();
+    // toogleModal();
     // Assignment 3: Task 1
     Alert.alert(
       'Your Reservation OK?',
