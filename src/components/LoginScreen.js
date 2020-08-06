@@ -4,6 +4,8 @@ import {Input, CheckBox, Icon, Button} from 'react-native-elements';
 import * as SecureStore from 'expo-secure-store';
 import * as Permissions from 'expo-permissions';
 import * as ImagePicker from 'expo-image-picker';
+import { Asset } from "expo-asset";
+import * as ImageManipulator from "expo-image-manipulator";
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {baseURL} from "../shared/baseURL";
 
@@ -119,13 +121,13 @@ export const RegisterTab = (props) => {
       });
 
       if (!capturedImage.cancelled) {
-        setImageURL(capturedImage.uri);
+        // setImageURL(capturedImage.uri);
+        processImage(capturedImage.uri);
       }
     }
   };
 
   const handleRegister = () => {
-
     console.log(JSON.stringify({username, password, remember}));
     if (remember) {
       SecureStore.setItemAsync('userInfo', JSON.stringify({username, password}))
@@ -133,6 +135,15 @@ export const RegisterTab = (props) => {
           console.log('Could not save user info', error);
         });
     }
+  };
+
+  const processImage = async (imageURI) => {
+    let processedImage = await ImageManipulator.manipulateAsync(
+      imageURI,
+      [{resize: {width: 400}}],
+      {format: ImageManipulator.SaveFormat.PNG}
+    );
+    setImageURL(processedImage.uri);
   };
 
   return (
