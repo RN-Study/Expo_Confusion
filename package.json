@@ -11,6 +11,7 @@
     "@react-native-community/async-storage": "react-native-community/async-storage",
     "@react-native-community/datetimepicker": "^2.6.1",
     "@react-native-community/masked-view": "0.1.10",
+    "@react-native-community/netinfo": "^5.9.5",
     "@react-native-community/picker": "^1.6.5",
     "@react-navigation/bottom-tabs": "^5.8.0",
     "@react-navigation/drawer": "^5.8.7",
