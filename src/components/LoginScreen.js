@@ -110,21 +110,47 @@ export const RegisterTab = (props) => {
   const [email, setEmail] = useState('');
   const [imageURL, setImageURL] = useState(baseURL + 'images/logo.png');
 
+  const processImage = async (imageURI) => {
+    let processedImage = await ImageManipulator.manipulateAsync(
+      imageURI,
+      [{resize: {width: 400}}],
+      {format: ImageManipulator.SaveFormat.PNG}
+    );
+    setImageURL(processedImage.uri);
+  };
   const getImageFromCamera = async () => {
     const cameraPermission = await Permissions.askAsync(Permissions.CAMERA);
-    const cameraRollPermission = await Permissions.askAsync(Permissions.CAMERA_ROLL);
-
-    if (cameraPermission.status === 'granted' && cameraRollPermission.status === 'granted') {
+    // const cameraRollPermission = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+    if (cameraPermission.status === 'granted' ) {
+      // get Image from Camera
       let capturedImage = await ImagePicker.launchCameraAsync({
         allowsEditing: true,
         aspect: [4, 3]
       });
-
       if (!capturedImage.cancelled) {
         // setImageURL(capturedImage.uri);
         processImage(capturedImage.uri);
       }
     }
+  };
+  // Assignment 4: Task 1 - Get image from Library
+  const getImageFromLibrary = async () => {
+    const cameraRollPermission = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+    if (cameraRollPermission.status === 'granted') {
+      try {
+        let result = await ImagePicker.launchImageLibraryAsync({
+          mediaTypes: ImagePicker.MediaTypeOptions.All,
+          allowsEditing: true,
+          aspect: [4, 3],
+          quality: 1,
+        });
+        if (!result.cancelled) {
+          processImage(result.uri);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
   };
 
   const handleRegister = () => {
@@ -135,15 +161,6 @@ export const RegisterTab = (props) => {
           console.log('Could not save user info', error);
         });
     }
-  };
-
-  const processImage = async (imageURI) => {
-    let processedImage = await ImageManipulator.manipulateAsync(
-      imageURI,
-      [{resize: {width: 400}}],
-      {format: ImageManipulator.SaveFormat.PNG}
-    );
-    setImageURL(processedImage.uri);
   };
 
   return (
@@ -158,6 +175,10 @@ export const RegisterTab = (props) => {
           <Button
             title={'Camera'}
             onPress={getImageFromCamera}
+          />
+          <Button
+            title={'Gallery'}
+            onPress={getImageFromLibrary}
           />
         </View>
         <Input
@@ -270,7 +291,9 @@ const styles = StyleSheet.create({
   imageContainer: {
     flex: 1,
     flexDirection: 'row',
-    margin: 20
+    margin: 20,
+    justifyContent: 'space-around',
+    alignItems: 'center'
   },
   imageStyle: {
     margin: 20,

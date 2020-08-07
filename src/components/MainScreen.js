@@ -315,13 +315,13 @@ export const MainNavigator = (props) => {
           } else if (route.name === 'Contact') {
             iconName = `address-card${focused ? '' : ''}`;
             size = 22;
-              } else if (route.name === 'Reservation') {
-                iconName = `cutlery${focused ? '' : ''}`;
-                size = 24;
-              } else if (route.name === 'Favorites') {
-                iconName = `heart${focused ? '' : ''}`;
-                size = 24;
-              }
+          } else if (route.name === 'Reservation') {
+            iconName = `cutlery${focused ? '' : ''}`;
+            size = 24;
+          } else if (route.name === 'Favorites') {
+            iconName = `heart${focused ? '' : ''}`;
+            size = 24;
+          }
           return (
             <Icon name={iconName} type={iconType} size={size} color={color}/>
           );
@@ -396,22 +396,7 @@ const Main = (props) => {
     props.fetchLeaders();
     props.fetchPromos();
     props.fetchComments();
-
-    NetInfo.fetch()
-      .then((connectionInfo) => {
-        ToastAndroid.show('Initial Network Connectivity Type: '
-        + connectionInfo.type + ', effectiveType: ' + connectionInfo.effectiveType,
-          ToastAndroid.LONG)
-      });
-    const unsubscribe = NetInfo.addEventListener('connectionChange', handleConnectivityChange);
-    return () => {
-      unsubscribe();
-    };
   }, []);
-
-  // useEffect(() => {
-  //   NetInfo.removeEventListener('connectionChange', handleConnectivityChange);
-  // });
 
   const handleConnectivityChange = (connectionInfo) => {
     switch (connectionInfo.type) {
@@ -431,6 +416,18 @@ const Main = (props) => {
         break;
     }
   };
+  useEffect(() => {
+    Platform.OS === 'android'
+      ? NetInfo.fetch()
+        .then((connectionInfo) => {
+          ToastAndroid.show('Initial Network Connectivity Type: '
+            + connectionInfo.type + ', effectiveType: ' + connectionInfo.effectiveType,
+            ToastAndroid.LONG)
+        })
+      : '';
+    const unsubscribe = NetInfo.addEventListener('connectionChange', handleConnectivityChange);
+    return unsubscribe;
+  }, []);
 
   return (
     <View style={{flex: 1}}>

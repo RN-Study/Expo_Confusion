@@ -1,4 +1,4 @@
-import React, {useState, useRef} from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import {
   View,
   StyleSheet,
@@ -19,6 +19,8 @@ import {Icon} from 'react-native-elements';
 import * as Animatable from 'react-native-animatable';
 import * as Permissions from 'expo-permissions';
 import * as Notifications from 'expo-notifications';
+import * as ImagePicker from "expo-image-picker";
+import * as Calendar from 'expo-calendar';
 
 const Reservation = () => {
   const [guests, setGuests] = useState(1);
@@ -28,6 +30,53 @@ const Reservation = () => {
   const [show, setShow] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const inputRefs = useRef({guests: null});
+
+  // Assignment 4: Task 2 - Created event Reservation to Calendar
+  const obtainCalendarPermission = async () => {
+    let calendarPermission = await Permissions.askAsync(Permissions.CALENDAR);
+    if (calendarPermission.status !== 'granted') {
+      calendarPermission = await Permissions.askAsync(Permissions.CALENDAR);
+      if (calendarPermission.status !== 'granted') {
+        Alert.alert('Permission not granted to show Calendar');
+      }
+    }
+    return calendarPermission;
+  };
+  const getDefaultCalendar = async () => {
+    const calendars = await Calendar.getCalendarsAsync();
+    const defaultCalendars = calendars.filter(each => each.source.name === 'Default');
+    return defaultCalendars[0].source;
+  };
+
+  const addReservationToCalendar = async (date) => {
+    await obtainCalendarPermission();
+    let myDate = date ? Date.parse(date) : new Date();
+    const startDate = new Date(myDate);
+    const endDate = new Date(myDate + (2 * 60 * 60 * 1000));
+    const defaultCalendarSource =
+      Platform.OS === 'ios'
+        ? await getDefaultCalendar()
+        : {isLocalAccount: true, name: 'Confusion Tab Reservation'};
+    let details = {
+      title: 'Confusion Tab Reservation',
+      color: 'blue',
+      entityType: Calendar.EntityTypes.EVENT,
+      sourceId: defaultCalendarSource.id,
+      source: defaultCalendarSource,
+      name: 'internalCalendarName',
+      ownerAccount: 'personal',
+      accessLevel: Calendar.CalendarAccessLevel.OWNER,
+    };
+    const calendarID = await Calendar.createCalendarAsync(details);
+    await Calendar.createEventAsync(calendarID, {
+      title: 'Confusion Tab Reservation',
+      startDate: startDate,
+      endDate: endDate,
+      timeZone: 'Asia/Hong_Kong',
+      location: '121, Clear Water Bay Road, Clear Water Bay, Kowloon, Hong Kong',
+    });
+    Alert.alert('Reservation has been added to your calendar');
+  }
 
   const handleReservation = () => {
     console.log(JSON.stringify({guests, smoking, date}));
@@ -57,6 +106,7 @@ const Reservation = () => {
           onPress: () => {
             console.log('OK Pressed');
             presentLocalNotification(date);
+            addReservationToCalendar(date);
             resetForm();
           },
           style: 'default',
@@ -77,7 +127,7 @@ const Reservation = () => {
 
   const obtainNotificationPermission = async () => {
     let permission = await Permissions.getAsync(Permissions.USER_FACING_NOTIFICATIONS);
-    if ( permission.status  !== 'granted') {
+    if (permission.status !== 'granted') {
       permission = await Permissions.askAsync(Permissions.USER_FACING_NOTIFICATIONS);
       if (permission.status !== 'granted') {
         Alert.alert('Permission not granted to show notifications');
@@ -88,20 +138,34 @@ const Reservation = () => {
 
   const presentLocalNotification = async (date) => {
     await obtainNotificationPermission();
-    Notifications.presentNotificationAsync({
-      title: 'Your Reservation',
-      body: 'Reservation for ' + date + ' requested',
-      ios: {
-        sound: true,
-        vibrate: true,
-        color: '#512DA8'
-      },
-      android: {
-        sound: true,
-        vibrate: true,
-        color: '#512DA8'
+    Notifications.setNotificationHandler({
+      handleNotification: async () => {
+        return {
+          shouldShowAlert: true,
+          shouldPlaySound: true,
+          shouldSetBadge: true,
+        };
       }
     });
+    const content = {
+      title: 'Your Reservation',
+      body: 'Reservation for ' + date + ' requested',
+    };
+    Notifications.scheduleNotificationAsync({content, trigger: null});
+    // Notifications.presentNotificationAsync({
+    //   title: 'Your Reservation',
+    //   body: 'Reservation for ' + date + ' requested',
+    //   ios: {
+    //     sound: true,
+    //     vibrate: true,
+    //     color: '#512DA8'
+    //   },
+    //   android: {
+    //     sound: true,
+    //     vibrate: true,
+    //     color: '#512DA8'
+    //   }
+    // });
   }
 
   return (
